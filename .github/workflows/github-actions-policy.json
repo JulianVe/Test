@@ -10,7 +10,8 @@
         "lambda:*",
         "apigateway:*",
         "ssm:GetParameter",
-        "ssm:PutParameter"
+        "ssm:PutParameter",
+        "sts:AssumeRoleWithWebIdentity"
       ],
       "Resource": "*"
     }
