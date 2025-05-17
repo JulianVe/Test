@@ -42,12 +42,15 @@ jobs:
         
         echo "::set-output name=OIDC_TOKEN::$OIDC_TOKEN"
 
-    - name: Debug OIDC Token
+    - name: Debug GitHub OIDC Token
       run: |
         TOKEN_JSON=$(curl -s -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
         echo "OIDC Token JSON: $TOKEN_JSON"
         OIDC_VALUE=$(echo "$TOKEN_JSON" | jq -r '.value')
         echo "OIDC Raw Token: $OIDC_VALUE"
+        echo "Decoded Token Claims:"
+        echo "$OIDC_VALUE" | jq -R 'split(".") | .[1] | @base64d | fromjson'
+
 
         
     - name: Assume AWS Role with Web Identity
