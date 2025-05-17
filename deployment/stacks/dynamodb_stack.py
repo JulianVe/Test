@@ -9,7 +9,7 @@ class DynamoDBStack(Stack):
         super().__init__(scope, id, **kwargs)
 
         self.table = dynamodb.Table(
-            self, "DynamoDBTable",
+            self, "DynamoDbTable",
             table_name=TABLE_NAME, 
             partition_key=dynamodb.Attribute(name="id", type=dynamodb.AttributeType.STRING),
             billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST
