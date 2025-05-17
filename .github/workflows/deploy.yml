@@ -24,10 +24,20 @@ jobs:
     - name: Install AWS CDK
       run: npm install -g aws-cdk
 
+    - name: Output GitHub OIDC Token
+      run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+
+    - name: Assume AWS Role with Web Identity
+      run: |
+        aws sts assume-role-with-web-identity \
+          --role-arn arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsRole \
+          --web-identity-token ${{ secrets.GITHUB_TOKEN }} \
+          --role-session-name GitHubActionsSession
+          
     - name: Configure AWS Credentials via OIDC
       uses: aws-actions/configure-aws-credentials@v2
       with:
-        role-to-assume: arn:aws:iam::221082209079:role/GitHubActionsRole
+        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsRole
         aws-region: eu-west-2
 
     - name: Install Python Dependencies
