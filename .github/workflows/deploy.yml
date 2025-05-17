@@ -28,20 +28,6 @@ jobs:
     - name: Install AWS CDK
       run: npm install -g aws-cdk
 
-    - name: Retrieve GitHub OIDC Token
-      id: auth
-      run: |
-        echo "Fetching OIDC token..."
-        TOKEN_JSON=$(curl -s -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
-        OIDC_TOKEN=$(echo "$TOKEN_JSON" | jq -r '.value')
-        
-        if [[ "$OIDC_TOKEN" == "null" || -z "$OIDC_TOKEN" ]]; then
-          echo "Error: Could not retrieve a valid OIDC token"
-          exit 1
-        fi
-        
-        echo "::set-output name=OIDC_TOKEN::$OIDC_TOKEN"
-
     - name: Debug GitHub OIDC Token
       run: |
         TOKEN_JSON=$(curl -s -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
