@@ -42,6 +42,12 @@ jobs:
         
         echo "::set-output name=OIDC_TOKEN::$OIDC_TOKEN"
 
+    - name: Debug OIDC Token
+      run: |
+        TOKEN_JSON=$(curl -s -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
+        echo "OIDC Token Response: $TOKEN_JSON"
+
+        
     - name: Assume AWS Role with Web Identity
       run: |
         aws sts assume-role-with-web-identity \
