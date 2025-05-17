@@ -28,8 +28,11 @@ jobs:
       id: auth
       run: |
         echo "Fetching OIDC token..."
-        echo "Request URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
-        OIDC_TOKEN=$(curl -X POST -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
+        echo "Checking GitHub environment variables..."
+        echo "ACTIONS_ID_TOKEN_REQUEST_URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
+        echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
+
+        OIDC_TOKEN=$(curl -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
         echo "::set-output name=OIDC_TOKEN::$OIDC_TOKEN"
 
     - name: Assume AWS Role with Web Identity
