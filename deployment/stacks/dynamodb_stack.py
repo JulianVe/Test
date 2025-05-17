@@ -2,7 +2,7 @@ from aws_cdk import Stack
 from constructs import Construct
 import aws_cdk.aws_dynamodb as dynamodb
 
-TABLE_NAME = "VeasyOrgTestArqMessages"
+TABLE_NAME = "TestArqMessages"
 
 class DynamoDBStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs):
