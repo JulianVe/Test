@@ -4,8 +4,8 @@ from message_provider_static import MessageProvider
 
 message_provider = MessageProvider()
 
-def lambda_hander(event, context):
-    logging.info('message')
+def hander(event, context):
+    logging.info(f'handler {event} {context}')
 
     return {
         "statusCode": 200,

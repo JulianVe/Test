@@ -8,7 +8,7 @@ class APIStack(Stack):
 
         self.api = apigateway.RestApi(
             self, "APIGateway",
-            rest_api_name="MessageAPI",
+            rest_api_name="veasy_org_test_arq_message_api",
             description="Handles message retrieval."
         )
 
