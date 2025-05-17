@@ -8,11 +8,13 @@
       },
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
-        "StringLike": {
-          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+        "StringEquals": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+        },
+        "ForAnyValue:StringLike": {
           "token.actions.githubusercontent.com:sub": [
             "repo:JulianVe/Test:ref:refs/heads/master",
-            "repo:JulianVe/Test:ref:refs/heads/release-*"
+            "repo:JulianVe/Test:ref:refs/heads/release/*"
           ]
         }
       }

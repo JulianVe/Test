@@ -60,7 +60,7 @@ jobs:
         aws-region: eu-west-2
 
     - name: Install Python Dependencies
-      run: pip install -r requirements.txt
+      run: pip install -r deployment/requirements.txt
 
     - name: Bootstrap CDK (if required)
       run: cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/eu-west-2
