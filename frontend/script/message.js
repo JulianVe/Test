@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const response = await fetch("/api/v1/message");
+        const response = await fetch("https://mvetfj0ueb.execute-api.eu-west-2.amazonaws.com/prod/message");
         const data = await response.json();
 
         document.getElementById("message").textContent = `The saved string is ${data.text}`;
