@@ -8,7 +8,7 @@ class LambdaStack(Stack):
         super().__init__(scope, id, **kwargs)
 
         self.lambda_function = _lambda.Function(
-            self, "veasy_org_test_arq_message_lambda",
+            self, "LambdaFunction",
             runtime=_lambda.Runtime.PYTHON_3_9,
             handler="lambda_function.handler",
             code=_lambda.Code.from_asset("../backend"),
