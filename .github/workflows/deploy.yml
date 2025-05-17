@@ -33,9 +33,9 @@ jobs:
       run: |
         TOKEN_JSON=$(curl -s -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
           "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
-        echo "OIDC Token JSON: $TOKEN_JSON"
         OIDC_VALUE=$(echo "$TOKEN_JSON" | jq -r '.value')
 
+        echo "OIDC Token JSON: $TOKEN_JSON"
         echo "OIDC Raw Token: $OIDC_VALUE"
         echo "Decoded Token Claims:"
         echo "$OIDC_VALUE" | jq -R 'split(".") | .[1] | @base64d | fromjson'
@@ -43,7 +43,8 @@ jobs:
 
     - name: Test AWS STS Role Assumption
       run: |
-        TOKEN_JSON=$(curl -s -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
+        TOKEN_JSON=$(curl -s -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+          "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
         OIDC_VALUE=$(echo "$TOKEN_JSON" | jq -r '.value')
 
         echo "Testing AWS STS role assumption..."
