@@ -3,7 +3,7 @@ name: Deploy to AWS
 permissions:
   id-token: write
   contents: read
-  
+
 on:
   push:
     branches:
@@ -32,11 +32,14 @@ jobs:
       id: auth
       run: |
         echo "Fetching OIDC token..."
-        echo "Checking GitHub environment variables..."
-        echo "ACTIONS_ID_TOKEN_REQUEST_URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
-        echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
-
-        OIDC_TOKEN=$(curl -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
+        TOKEN_JSON=$(curl -s -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
+        OIDC_TOKEN=$(echo "$TOKEN_JSON" | jq -r '.value')
+        
+        if [[ "$OIDC_TOKEN" == "null" || -z "$OIDC_TOKEN" ]]; then
+          echo "Error: Could not retrieve a valid OIDC token"
+          exit 1
+        fi
+        
         echo "::set-output name=OIDC_TOKEN::$OIDC_TOKEN"
 
     - name: Assume AWS Role with Web Identity
