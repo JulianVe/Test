@@ -19,4 +19,4 @@ class MessageProvider:
         if not is_configured:
             logging.warning('no message configured')
 
-        return items[0] if is_configured else "dynamic string"
+        return items[0]['text'] if is_configured else "dynamic string"
