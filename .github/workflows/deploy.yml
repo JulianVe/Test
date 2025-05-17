@@ -28,16 +28,6 @@ jobs:
     - name: Install AWS CDK
       run: npm install -g aws-cdk
 
-    - name: Debug GitHub OIDC Token
-      run: |
-        TOKEN_JSON=$(curl -s -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
-        echo "OIDC Token JSON: $TOKEN_JSON"
-        OIDC_VALUE=$(echo "$TOKEN_JSON" | jq -r '.value')
-        echo "OIDC Raw Token: $OIDC_VALUE"
-        echo "Decoded Token Claims:"
-        echo "$OIDC_VALUE" | jq -R 'split(".") | .[1] | @base64d | fromjson'
-        echo "Extracted OIDC Token: $OIDC_VALUE"
-
     - name: Request GitHub OIDC Token with Correct Audience
       id: auth
       run: |
@@ -45,7 +35,22 @@ jobs:
           "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
         echo "OIDC Token JSON: $TOKEN_JSON"
         OIDC_VALUE=$(echo "$TOKEN_JSON" | jq -r '.value')
-        echo "::set-output name=OIDC_TOKEN::$OIDC_VALUE"
+
+        echo "OIDC Raw Token: $OIDC_VALUE"
+        echo "Decoded Token Claims:"
+        echo "$OIDC_VALUE" | jq -R 'split(".") | .[1] | @base64d | fromjson'
+        echo "Extracted OIDC Token: $OIDC_VALUE"
+
+    - name: Test AWS STS Role Assumption
+      run: |
+        TOKEN_JSON=$(curl -s -X GET -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
+        OIDC_VALUE=$(echo "$TOKEN_JSON" | jq -r '.value')
+
+        echo "Testing AWS STS role assumption..."
+        aws sts assume-role-with-web-identity \
+          --role-arn arn:aws:iam::221082209079:role/GitHubActionsRole \
+          --web-identity-token "$OIDC_VALUE" \
+          --role-session-name GitHubActionsSession
               
     - name: Configure AWS Credentials via OIDC
       uses: aws-actions/configure-aws-credentials@v2
