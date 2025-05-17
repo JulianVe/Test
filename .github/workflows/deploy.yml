@@ -1,0 +1,42 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main  # Change to your deployment branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set Up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install AWS CDK
+      run: npm install -g aws-cdk
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
+
+    - name: Install Python Dependencies
+      run: pip install -r requirements.txt
+
+    - name: Bootstrap CDK (if required)
+      run: cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/eu-west-2
+
+    - name: Deploy AWS CDK
+      run: cdk deploy --all --require-approval never
+
+    - name: Sync Frontend Files to S3
+      run: aws s3 sync ./frontend s3://veasy.org.test.arq --acl public-read
+
