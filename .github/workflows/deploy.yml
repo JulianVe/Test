@@ -51,7 +51,6 @@ jobs:
         echo "Decoded Token Claims:"
         echo "$OIDC_VALUE" | jq -R 'split(".") | .[1] | @base64d | fromjson'
 
-
     - name: Request GitHub OIDC Token with Correct Audience
       id: auth
       run: |
