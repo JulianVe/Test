@@ -2,7 +2,7 @@ import os
 import boto3
 import logging
 
-TABLE_NAME = "TestArqMessages"
+TABLE_NAME = "DynamoDBStack-TestArqMessages6C751E1A-1QO7EAZWY2LOY"
 REGION_NAME = 'eu-west-2'
 
 dynamodb = boto3.resource('dynamodb', region_name = REGION_NAME)

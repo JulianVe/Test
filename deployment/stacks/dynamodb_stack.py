@@ -13,3 +13,4 @@ class DynamoDBStack(Stack):
             partition_key=dynamodb.Attribute(name="id", type=dynamodb.AttributeType.STRING),
             billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST
         )
+    

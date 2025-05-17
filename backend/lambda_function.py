@@ -1,6 +1,6 @@
 import logging
 import json
-from message_provider_static import MessageProvider
+from message_provider_db import MessageProvider
 
 message_provider = MessageProvider()
 
