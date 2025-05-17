@@ -46,9 +46,9 @@ jobs:
     - name: 📣 Notify Slack of Successful Deployment
       if: success()
       run: |
-      END_TIME=$(date +%s)
-      DURATION=$((END_TIME - START_TIME))
-      MINUTES=$((DURATION / 60))
+        END_TIME=$(date +%s)
+        DURATION=$((END_TIME - START_TIME))
+        MINUTES=$((DURATION / 60))
         SECONDS=$((DURATION % 60))
         curl -X POST -H 'Content-type: application/json' \
           --data "{\"text\":\"✅ *Test deployed successfully to production*\nBranch: ${{ github.ref }}\nCommit: ${{ github.sha }}\n🕒 Duration: ${MINUTES}m ${SECONDS}s\"}" \
