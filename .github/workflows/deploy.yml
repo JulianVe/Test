@@ -24,14 +24,19 @@ jobs:
     - name: Install AWS CDK
       run: npm install -g aws-cdk
 
-    - name: Output GitHub OIDC Token
-      run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+    - name: Retrieve GitHub OIDC Token
+      id: auth
+      run: |
+        echo "Fetching OIDC token..."
+        echo "Request URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
+        OIDC_TOKEN=$(curl -X POST -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL")
+        echo "::set-output name=OIDC_TOKEN::$OIDC_TOKEN"
 
     - name: Assume AWS Role with Web Identity
       run: |
         aws sts assume-role-with-web-identity \
           --role-arn arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsRole \
-          --web-identity-token ${{ secrets.GITHUB_TOKEN }} \
+          --web-identity-token ${{ steps.auth.outputs.OIDC_TOKEN }} \
           --role-session-name GitHubActionsSession
           
     - name: Configure AWS Credentials via OIDC
