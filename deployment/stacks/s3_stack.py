@@ -21,3 +21,10 @@ class S3Stack(Stack):
             self, "BucketWebsiteURL",
             value=self.bucket.bucket_website_url
         )
+
+        # Add CORS configuration
+        self.bucket.add_cors_rule(
+            allowed_methods=[s3.HttpMethods.GET, s3.HttpMethods.POST],
+            allowed_origins=["*"],
+            allowed_headers=["*"]
+        )
