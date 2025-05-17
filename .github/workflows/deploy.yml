@@ -73,7 +73,7 @@ jobs:
         cdk deploy --all --require-approval never
 
     - name: Sync Frontend Files to S3
-      run: aws s3 sync ./frontend s3://veasy.org.test.arq --acl public-read
+      run: aws s3 sync ./frontend s3://veasy.org.test.arq
 
     - name: 📣 Notify Slack of Successful Deployment
       if: success()
