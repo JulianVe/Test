@@ -4,7 +4,7 @@ from message_provider_static import MessageProvider
 
 message_provider = MessageProvider()
 
-def hander(event, context):
+def handler(event, context):
     logging.info(f'handler {event} {context}')
 
     return {
