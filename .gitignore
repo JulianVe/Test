@@ -1,3 +1,4 @@
 deployment/cdk.out/
 **/__pycache__/
 .venv/
+README.pdf
