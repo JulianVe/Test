@@ -23,15 +23,5 @@ class APIStack(Stack):
         # Enable CORS for the /message resource
         message_resource.add_method(
             "GET",
-            apigateway.LambdaIntegration(lambda_function),
-            method_responses=[
-                apigateway.MethodResponse(
-                    status_code="200",
-                    response_parameters={
-                        "method.response.header.Access-Control-Allow-Origin": True,
-                        "method.response.header.Access-Control-Allow-Methods": True,
-                        "method.response.header.Access-Control-Allow-Headers": True
-                    }
-                )
-            ]
+            apigateway.LambdaIntegration(lambda_function)
         )

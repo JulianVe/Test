@@ -9,7 +9,6 @@ app = App()
 
 dynamodb_stack = DynamoDBStack(app, "DynamoDBStack")
 lambda_stack = LambdaStack(app, "LambdaStack", dynamodb_table=dynamodb_stack.table)
-#lambda_stack = LambdaStack(app, "LambdaStack", dynamodb_stack.table)
 api_stack = APIStack(app, "APIStack", lambda_function=lambda_stack.lambda_function)
 s3_stack = S3Stack(app, "S3Stack")
 
