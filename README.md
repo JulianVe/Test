@@ -36,7 +36,8 @@ In no particular order - would need to be prioritised in conjunction with busine
 * Logging - some basic logging has been included but should be reviewed and possibly extended to ensure sufficient monitoring is available in production.
 * Testing - currently the GitHub action assumes deployment directly from 'dev' to 'prod'.  Separate deployment configuration could be included for 'stage' to allow a more controlled testing environment before promoting to 'prod'.
 * Scalability - unlikely to be an issue at present with such a trivial app, however, as the app becomes more complex, consider using a AWS Edge Locations / Cloundfront to minimise network latency on static content, configuring endpoint caching in AWS API Gateway, backend data layer caching.
-* API usage limiting - generally good practice to include some rate limiting on services that could potentially result in costs.  Better to set a very high limit that no limit whatsoever.
+* (added) API usage limiting - generally good practice to include some rate limiting on services that could potentially result in costs.  Better to set a very high limit that no limit whatsoever.
 * API versioning - the endpoint should be versioned - I would favour versioning via the URL path, eg. /api/v1/message
 * CSS - the &lt;h1&gt; tag should be moved to a separate styling CSS file.
 * text updates - could be facilitated by extending the API endpoint to support the PUT HTTP method, to support a simple 'Content Management' application.  Naturally this would need to be secured, possibly by a simple login that generates a JWT token that could be included in API requests to update the text.
+* Avoid hardcoding the API URL in the javascript.

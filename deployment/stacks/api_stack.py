@@ -1,4 +1,4 @@
-from aws_cdk import Stack
+from aws_cdk import Stack, CfnOutput
 from constructs import Construct
 import aws_cdk.aws_apigateway as apigateway
 
@@ -45,4 +45,11 @@ class APIStack(Stack):
         message_resource.add_method(
             "GET",
             apigateway.LambdaIntegration(lambda_function)
+        )
+        
+        # Output the API URL
+        CfnOutput(
+            self,
+            "ApiUrl",
+            value=f"https://{self.api.rest_api_id}.execute-api.{Stack.of(self).region}.amazonaws.com/{prod_stage.stage_name}"
         )
