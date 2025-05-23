@@ -62,7 +62,7 @@ jobs:
 
     - name: Retrieve API URL from CloudFormation
       run: |
-        API_URL=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" --output text)
+        API_URL=$(aws cloudformation describe-stacks --stack-name APIStack --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" --output text)
         echo "API_URL=${API_URL}" >> $GITHUB_ENV
 
     - name: Inject API URL into Frontend
