@@ -12,6 +12,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: "eu-west-2"
 
     steps:
     - name: ⏱ Set Deployment Start Time
@@ -43,7 +45,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsRole
-        aws-region: eu-west-2
+        aws-region: ${{ env.AWS_REGION }}
 
     - name: Install Python Dependencies
       run: |
@@ -51,7 +53,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Bootstrap CDK (if required)
-      run: cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/eu-west-2
+      run: cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/${{ env.AWS_REGION }}
 
     - name: Deploy AWS CDK
       run: |
