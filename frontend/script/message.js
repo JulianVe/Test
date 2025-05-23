@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const response = await fetch("https://zq4occ45va.execute-api.eu-west-2.amazonaws.com/prod/message", {
+        const response = await fetch("{PLACEHOLDER_API_URL}}", {
             method: "GET",
             headers: {
                 "Accept": "application/json",

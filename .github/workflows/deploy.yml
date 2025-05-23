@@ -60,6 +60,16 @@ jobs:
         cd deployment
         cdk deploy --all --require-approval never
 
+    - name: Retrieve API URL from CloudFormation
+      run: |
+        API_URL=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" --output text)
+        echo "API_URL=${API_URL}" >> $GITHUB_ENV
+
+    - name: Inject API URL into Frontend
+      run: |
+        echo "REACT_APP_API_URL=$API_URL" > frontend/.env
+        sed -i "s|PLACEHOLDER_API_URL|$API_URL|g" frontend/src/messages.js
+
     - name: Sync Frontend Files to S3
       run: aws s3 sync ./frontend s3://veasy.org.test.arq
 
