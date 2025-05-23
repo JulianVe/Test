@@ -68,7 +68,7 @@ jobs:
     - name: Inject API URL into Frontend
       run: |
         echo "REACT_APP_API_URL=$API_URL" > frontend/.env
-        sed -i "s|PLACEHOLDER_API_URL|$API_URL|g" frontend/src/messages.js
+        sed -i "s|PLACEHOLDER_API_URL|$API_URL|g" frontend/script/message.js
 
     - name: Sync Frontend Files to S3
       run: aws s3 sync ./frontend s3://veasy.org.test.arq
