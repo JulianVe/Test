@@ -81,12 +81,12 @@ jobs:
         MINUTES=$((DURATION / 60))
         SECONDS=$((DURATION % 60))
         curl -X POST -H 'Content-type: application/json' \
-          --data "{\"text\":\"✅ *Test deployed successfully to production*\nBranch: ${{ github.ref }}\nCommit: ${{ github.sha }}\n🕒 Duration: ${MINUTES}m ${SECONDS}s\"}" \
+          --data "{\"text\":\"✅ *Test deployed successful to production*\nBranch: ${{ github.ref }}\nCommit: ${{ github.sha }}\n🕒 Duration: ${MINUTES}m ${SECONDS}s\"}" \
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
     - name: 📣 Notify Slack of Failed Deployment
       if: failure()
       run: |
         curl -X POST -H 'Content-type: application/json' \
-          --data "{\"text\":\"  *Test deployment failure to production*\nBranch: ${{ github.ref }}\nCommit: ${{ github.sha }}\"}" \
+          --data "{\"text\":\"  *Test deployment failed to production*\nBranch: ${{ github.ref }}\nCommit: ${{ github.sha }}\"}" \
           ${{ secrets.SLACK_WEBHOOK_URL }}
