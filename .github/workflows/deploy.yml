@@ -35,7 +35,7 @@ jobs:
           "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
         OIDC_VALUE=$(echo "$TOKEN_JSON" | jq -r '.value')
         aws sts assume-role-with-web-identity \
-          --role-arn arn:aws:iam::221082209079:role/GitHubActionsRole \
+          --role-arn arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsRole \
           --web-identity-token "$OIDC_VALUE" \
           --role-session-name GitHubActionsSession
               
