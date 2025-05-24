@@ -51,5 +51,5 @@ class APIStack(Stack):
         CfnOutput(
             self,
             "ApiUrl",
-            value=f"https://{self.api.rest_api_id}.execute-api.{Stack.of(self).region}.amazonaws.com/{prod_stage.stage_name}"
+            value=f"https://{self.api.rest_api_id}.execute-api.{Stack.of(self).region}.amazonaws.com/{prod_stage.stage_name}/message"
         )
