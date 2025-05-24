@@ -15,6 +15,7 @@ jobs:
     env:
       AWS_REGION: "eu-west-2"
       S3_BUCKET: "s3://veasy.org.test.arq"
+      API_STACK_NAME: "TestArqAPIStack"
 
     steps:
     - name: ⏱ Set Deployment Start Time
@@ -63,7 +64,7 @@ jobs:
 
     - name: Retrieve API URL from CloudFormation
       run: |
-        API_URL=$(aws cloudformation describe-stacks --stack-name APIStack --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" --output text)
+        API_URL=$(aws cloudformation describe-stacks --stack-name ${{ env.API_STACK_NAME }} --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" --output text)
         echo "API_URL=${API_URL}" >> $GITHUB_ENV
 
     - name: Inject API URL into Frontend
