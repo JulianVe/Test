@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: "eu-west-2"
+      S3_BUCKET: "s3://veasy.org.test.arq"
 
     steps:
     - name: ⏱ Set Deployment Start Time
@@ -66,12 +67,10 @@ jobs:
         echo "API_URL=${API_URL}" >> $GITHUB_ENV
 
     - name: Inject API URL into Frontend
-      run: |
-        echo "REACT_APP_API_URL=$API_URL" > frontend/.env
-        sed -i "s|PLACEHOLDER_API_URL|$API_URL|g" frontend/script/message.js
+      run: sed -i "s|PLACEHOLDER_API_URL|$API_URL|g" frontend/script/message.js
 
     - name: Sync Frontend Files to S3
-      run: aws s3 sync ./frontend s3://veasy.org.test.arq
+      run: aws s3 sync ./frontend ${{ env.S3_BUCKET }} --delete
 
     - name: 📣 Notify Slack of Successful Deployment
       if: success()
