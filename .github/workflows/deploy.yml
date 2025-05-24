@@ -68,7 +68,7 @@ jobs:
         echo "API_URL=${API_URL}" >> $GITHUB_ENV
 
     - name: Inject API URL into Frontend
-      run: sed -i "s|PLACEHOLDER_API_URL|$API_URL|g" frontend/script/message.js
+      run: sed -i "s|{PLACEHOLDER_API_URL}|$API_URL|g" frontend/script/message.js
 
     - name: Sync Frontend Files to S3
       run: aws s3 sync ./frontend ${{ env.S3_BUCKET }} --delete
