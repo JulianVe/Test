@@ -7,9 +7,11 @@ from stacks.s3_stack import S3Stack
 
 app = App()
 
-dynamodb_stack = DynamoDBStack(app, "DynamoDBStack")
-lambda_stack = LambdaStack(app, "LambdaStack", dynamodb_table=dynamodb_stack.table)
-api_stack = APIStack(app, "APIStack", lambda_function=lambda_stack.lambda_function)
-s3_stack = S3Stack(app, "S3Stack")
+stack_prefix = "TestArq"
+
+dynamodb_stack = DynamoDBStack(app, stack_prefix + "DynamoDBStack")
+lambda_stack = LambdaStack(app, stack_prefix + "LambdaStack", dynamodb_table=dynamodb_stack.table)
+api_stack = APIStack(app, stack_prefix + "APIStack", lambda_function=lambda_stack.lambda_function)
+s3_stack = S3Stack(app, stack_prefix + "S3Stack")
 
 app.synth()

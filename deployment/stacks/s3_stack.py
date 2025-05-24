@@ -5,26 +5,34 @@ import aws_cdk.aws_s3 as s3
 BUCKET_NAME = "veasy.org.test.arq"
 
 class S3Stack(Stack):
-    def __init__(self, scope: Construct, id: str, **kwargs):
+    def __init__(self, scope: Construct, id: str, import_existing: bool = True, **kwargs):
         super().__init__(scope, id, **kwargs)
 
-        self.bucket = s3.Bucket(
-            self, "FrontendBucket",
-            bucket_name=BUCKET_NAME,
-            block_public_access=s3.BlockPublicAccess.BLOCK_ACLS,
-            public_read_access=True,
-            website_index_document="index.html"
-        )
+        if import_existing:
+            # Import the bucket if it already exists.
+            self.bucket = s3.Bucket.from_bucket_name(
+                self, "FrontendBucket",
+                bucket_name=BUCKET_NAME
+            )
+        else:
+            # Create a new bucket.
+            self.bucket = s3.Bucket(
+                self, "FrontendBucket",
+                bucket_name=BUCKET_NAME,
+                block_public_access=s3.BlockPublicAccess.BLOCK_ACLS,
+                public_read_access=True,
+                website_index_document="index.html"
+            )
+            
+            # Add CORS configuration. 
+            self.bucket.add_cors_rule(
+                allowed_methods=[s3.HttpMethods.GET, s3.HttpMethods.POST],
+                allowed_origins=["*"],
+                allowed_headers=["*"]
+            )
 
-        # Ensure website hosting is enabled
+        # Output the website URL of the bucket.
         CfnOutput(
             self, "BucketWebsiteURL",
             value=self.bucket.bucket_website_url
-        )
-
-        # Add CORS configuration
-        self.bucket.add_cors_rule(
-            allowed_methods=[s3.HttpMethods.GET, s3.HttpMethods.POST],
-            allowed_origins=["*"],
-            allowed_headers=["*"]
         )
